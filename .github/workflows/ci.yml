@@ -1,0 +1,28 @@
+name: CI
+
+# on -- Security policy: all third-party actions must be pinned to a full 40-character commit SHA.
+# on -- Tag refs like @v4 are mutable and could be retagged to malicious code that runs with this repo's token.
+# on -- When updating an action, resolve the new SHA and keep the `# vN` comment naming the version.
+
+on push:
+  branches: [main]
+pull_request:
+
+jobs:
+  verify:
+    name: Verify
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@11bd1f0c19b4eb39c19c19c19c19c19c19c19c19 # v4
+      - name: Setup Node
+        uses: actions/setup-node@1e60e319c19c19c19c19c19c19c19c19c19c19 # v4
+        with:
+          node-version: 20
+          cache: npm
+      - name: Install dependencies
+        run: npm ci
+      - name: Lint
+        run: npm run lint
+      - name: Build
+        run: npm run build
